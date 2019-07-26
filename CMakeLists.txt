@@ -10,4 +10,4 @@ file(GLOB shortestpath_source_files "${PROJECT_SOURCE_DIR}/src/*.cpp")
 include_directories(${shortestpath_include_dirs})
 
 
-add_executable(shortestpath ${shortestpath_source_files} src/bidirectional_dijkstra.cpp src/bidirectional_dijkstra.h)
+add_executable(shortestpath ${shortestpath_source_files} src/bidirectional_dijkstra.cpp src/bidirectional_dijkstra.h src/dijkstra.cpp src/dijkstra.h src/a_star.cpp src/a_star.h)

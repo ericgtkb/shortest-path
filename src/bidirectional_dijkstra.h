@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <vector>
+#include <deque>
 #include <unordered_set>
 #include <queue>
 #include <limits>
@@ -35,7 +36,7 @@ protected:
     std::unordered_set<int> seen_;
     std::vector<std::vector<bool>> visited_;
     std::vector<std::vector<int>> prev_;
-    std::vector<int> path_;
+    std::deque<int> path_;
 
     virtual void initialize();
     virtual void clear();

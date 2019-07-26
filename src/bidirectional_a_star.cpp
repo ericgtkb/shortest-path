@@ -80,6 +80,7 @@ void BidirectionalAStar::visit(PQueue& q, int side, int u) {
         Length new_dist = distance_[side][u] + w - get_potential(u, side) + get_potential(v, side);
         if (!visited_[side][v] && distance_[side][v] > new_dist) {
             seen_.emplace(v);
+            prev_[side][v] = u;
             distance_[side][v] = new_dist;
             q[side].push({distance_[side][v], v});
         }
@@ -88,13 +89,28 @@ void BidirectionalAStar::visit(PQueue& q, int side, int u) {
 
 BidirectionalAStar::Length BidirectionalAStar::get_distance() {
     Length shortest_dist = LLINF;
+    int m = -1;
     for (int u : seen_) {
         Length cur_dist = distance_[0][u] + distance_[1][u] + potential_[0][s_] + potential_[1][t_];
         if (shortest_dist > cur_dist) {
+            m = u;
             shortest_dist = cur_dist;
         }
     }
-    return std::llround(shortest_dist);
+    int cur = m;
+    while (cur != -1) {
+        path_.emplace_front(cur);
+        cur = prev_[0][cur];
+    }
+    cur = m;
+    if (cur != -1) {
+        cur = prev_[1][cur];
+    }
+    while (cur != -1) {
+        path_.emplace_back(cur);
+        cur = prev_[1][cur];
+    }
+    return shortest_dist;
 }
 
 

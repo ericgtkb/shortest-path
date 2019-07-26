@@ -37,19 +37,24 @@ void BidirectionalDijkstra::read_graph_and_queries(std::istream& in) {
 void BidirectionalDijkstra::process_queries(bool print_path) {
     initialize();
     // TODO: for test case 3 only, remove it later
-    for (auto query : queries_) {
-        std::cout << find_path(query.first, query.second) << "\n";
-    }
-    // TODO: uncomment
 //    for (auto query : queries_) {
-//        std::cout << "The length of the shortest path from vertex " << query.first + 1
-//                  << " to vertex " << query.second + 1 << " is: "
-//                  << find_path(query.first, query.second) << "\n";
+//        std::cout << find_path(query.first, query.second) << "\n";
 //    }
-//    if (print_path) {
-//        std::cout << "The path is:" << "\n";
-//        print_shortest_path();
-//    }
+    // TODO: uncomment
+    for (auto query : queries_) {
+        Length dist = find_path(query.first, query.second);
+        std::cout << "The length of the shortest path from vertex " << query.first + 1
+                  << " to vertex " << query.second + 1 << " is: "
+                  << dist << "\n";
+        if (print_path) {
+            if (dist == -1) {
+                std::cout << "There is no path" << "\n";
+            } else {
+                std::cout << "The path is:" << "\n";
+                print_shortest_path();
+            }
+        }
+    }
 }
 
 void BidirectionalDijkstra::initialize() {
@@ -60,7 +65,6 @@ void BidirectionalDijkstra::initialize() {
     prev_[0].assign(num_vertices_, -1);
     prev_[1].assign(num_vertices_, -1);
     seen_.reserve(num_vertices_);
-    path_.reserve(num_vertices_);
 }
 
 
@@ -81,6 +85,7 @@ void BidirectionalDijkstra::visit(PQueue& q, int side, int u) {
         Length new_dist = distance_[side][u] + w;
         if (!visited_[side][v] && distance_[side][v] > new_dist) {
             seen_.emplace(v);
+            prev_[side][v] = u;
             distance_[side][v] = new_dist;
             q[side].push({distance_[side][v], v});
         }
@@ -89,12 +94,28 @@ void BidirectionalDijkstra::visit(PQueue& q, int side, int u) {
 
 BidirectionalDijkstra::Length BidirectionalDijkstra::get_distance() {
     Length shortest_dist = LLINF;
+    int m = -1;
     for (int u : seen_) {
         Length cur_dist = distance_[0][u] + distance_[1][u];
         if (shortest_dist > cur_dist) {
+            m = u;
             shortest_dist = cur_dist;
         }
     }
+    int cur = m;
+    while (cur != -1) {
+        path_.emplace_front(cur);
+        cur = prev_[0][cur];
+    }
+    cur = m;
+    if (cur != -1) {
+        cur = prev_[1][cur];
+    }
+    while (cur != -1) {
+        path_.emplace_back(cur);
+        cur = prev_[1][cur];
+    }
+
     return shortest_dist;
 }
 
@@ -131,6 +152,6 @@ BidirectionalDijkstra::Length BidirectionalDijkstra::find_path(int s, int t) {
 
 void BidirectionalDijkstra::print_shortest_path() {
     for (int i = 0; i < path_.size(); ++i) {
-        std::cout << path_[i] << (i != path_.size() - 1 ? " " : "\n");
+        std::cout << path_[i] + 1 << (i != path_.size() - 1 ? " " : "\n");
     }
 }

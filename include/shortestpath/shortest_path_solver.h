@@ -10,13 +10,14 @@
 
 class ShortestPathSolver {
 public:
-    ShortestPathSolver();
-    void read_graph_and_queries(std::istream& in);
-    void process_queries(bool print_path);
-    void solve();
+    ShortestPathSolver(int argc, char* argv[]);
 
 private:
     std::unique_ptr<ShortestPathAlgorithm> algorithm;
+    void read_graph_and_queries(std::istream& in);
+    void process_queries(bool print_path);
+    void solve(std::istream& in);
+    void print_intro(char c);
 
 };
 
