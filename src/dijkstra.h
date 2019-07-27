@@ -18,7 +18,7 @@ public:
     Dijkstra();
 
     virtual void read_graph_and_queries(std::istream& in) override;
-    virtual void process_queries(bool print_path) override;
+    virtual void process_queries(bool print_path, bool verbose) override;
 
 protected:
     constexpr static long long LLINF = std::numeric_limits<long long>::max();

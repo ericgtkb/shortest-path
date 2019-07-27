@@ -30,24 +30,33 @@ void Dijkstra::read_graph_and_queries(std::istream& in) {
     }
 }
 
-void Dijkstra::process_queries(bool print_path) {
+void Dijkstra::process_queries(bool print_path, bool verbose) {
     initialize();
-    // TODO: for test case 3 only, remove it later
-//    for (auto query : queries_) {
-//        std::cout << find_path(query.first, query.second) << "\n";
-//    }
-    // TODO: uncomment
-    for (auto query : queries_) {
-        Length dist = find_path(query.first, query.second);
-        std::cout << "The length of the shortest path from vertex " << query.first + 1
-                  << " to vertex " << query.second + 1 << " is: "
-                  << dist << "\n";
-        if (print_path) {
-            if (dist == -1) {
-                std::cout << "There is no path" << "\n";
-            } else {
-                std::cout << "The path is:" << "\n";
-                print_shortest_path();
+    if (verbose) {
+        for (auto query : queries_) {
+            Length dist = find_path(query.first, query.second);
+            std::cout << "The length of the shortest path from vertex " << query.first + 1
+                      << " to vertex " << query.second + 1 << " is: "
+                      << dist << "\n";
+            if (print_path) {
+                if (dist == -1) {
+                    std::cout << "There is no path!" << "\n";
+                } else {
+                    std::cout << "The path is:" << "\n";
+                    print_shortest_path();
+                }
+            }
+        }
+    } else {
+        for (auto query : queries_) {
+            Length dist = find_path(query.first, query.second);
+            std::cout << dist << "\n";
+            if (print_path) {
+                if (dist == -1) {
+                    std::cout << "There is no path!" << "\n";
+                } else {
+                    print_shortest_path();
+                }
             }
         }
     }
@@ -114,6 +123,9 @@ Dijkstra::Length Dijkstra::find_path(int s, int t) {
 }
 
 void Dijkstra::print_shortest_path() {
+    if (path_.empty()) {
+        std::cout << "\n";
+    }
     for (int i = 0; i < path_.size(); ++i) {
         std::cout << path_[i] + 1 << (i != path_.size() - 1 ? " " : "\n");
     }

@@ -19,7 +19,7 @@ public:
     BidirectionalDijkstra();
 
     virtual void read_graph_and_queries(std::istream& in) override;
-    virtual void process_queries(bool print_path) override;
+    virtual void process_queries(bool print_path, bool verbose) override;
 
 protected:
     // Divided by 4 to prevent overflow from LLINF + LLINF in the get_distance() method

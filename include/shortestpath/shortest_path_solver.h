@@ -13,11 +13,14 @@ public:
     ShortestPathSolver(int argc, char* argv[]);
 
 private:
+    bool verbose;
+    bool print_path;
+    char algo_type;
+    std::string filename;
     std::unique_ptr<ShortestPathAlgorithm> algorithm;
-    void read_graph_and_queries(std::istream& in);
-    void process_queries(bool print_path);
-    void solve(std::istream& in);
-    void print_intro(char c);
+    void solve(std::istream&);
+    void print_intro();
+    void print_help();
 
 };
 
