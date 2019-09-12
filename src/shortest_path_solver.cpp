@@ -13,42 +13,41 @@
 ShortestPathSolver::ShortestPathSolver(int argc, char* argv[]) : verbose{false}, print_path{false},
         algo_type{'d'}, algorithm{nullptr}, filename{} {
     if (argc > 1) {
-        std::string first_arg{argv[1]};
-        if (first_arg[0] == '-') {
-            for (int i = 1; i < first_arg.size(); ++i) {
-                char c = first_arg[i];
-                switch (c) {
-                    case 'a':
-                        algo_type = 'a';
-                        break;
-                    case 'A':
-                        algo_type = 'A';
-                        break;
-                    case 'd':
-                        algo_type = 'd';
-                        break;
-                    case 'D':
-                        algo_type = 'D';
-                        break;
-                    case 'h':
-                        print_help();
-                        return;
-                    case 'p':
-                        print_path = true;
-                        break;
-                    case 'v':
-                        verbose = true;
-                        break;
-                    default:
-                        std::cout << "Unknown option: -" << c << "!\n";
-                        exit(1);
+        for (int i = 1; i < argc; ++i) {
+            std::string current_arg{argv[i]};
+            if (current_arg[0] == '-') {
+                for (int j = 1; j < current_arg.size(); ++j) {
+                    char c = current_arg[j];
+                    switch (c) {
+                        case 'a':
+                            algo_type = 'a';
+                            break;
+                        case 'A':
+                            algo_type = 'A';
+                            break;
+                        case 'd':
+                            algo_type = 'd';
+                            break;
+                        case 'D':
+                            algo_type = 'D';
+                            break;
+                        case 'h':
+                            print_help();
+                            return;
+                        case 'p':
+                            print_path = true;
+                            break;
+                        case 'v':
+                            verbose = true;
+                            break;
+                        default:
+                            std::cout << "Unknown option: -" << c << "!\n";
+                            exit(1);
+                    }
                 }
+            } else if (filename.empty()) {
+                filename = current_arg;
             }
-        } else {
-            filename = first_arg;
-        }
-        if (argc > 2 && filename.empty()) {
-            filename = argv[2];
         }
     }
     print_intro();
